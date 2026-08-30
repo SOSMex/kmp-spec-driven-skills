@@ -1,0 +1,43 @@
+name: Skill feedback
+description: Report a concrete KMP case where a skill produced an unsafe, unclear, or incomplete result.
+title: "[Skill feedback]: "
+labels:
+  - feedback
+body:
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill
+      options:
+        - kmp-spec-driven-design
+        - kmp-proof-of-parity
+    validations:
+      required: true
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Reproducible scenario
+      description: Describe the repository shape, accepted request, supported targets, and relevant constraints without credentials or private data.
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed result
+      description: What did the skill recommend, omit, or overstate?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected invariant
+      description: What decision or claim should have been preserved?
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety check
+      options:
+        - label: I removed credentials, private repository facts, participant identities, and other sensitive data.
+          required: true

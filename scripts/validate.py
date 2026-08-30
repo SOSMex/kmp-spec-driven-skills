@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import re
+import struct
 import sys
 from pathlib import Path
 
@@ -20,6 +21,7 @@ REQUIRED_FILES = (
     "CONTRIBUTING.md",
     "LICENSE",
     "evals/cases.json",
+    "examples/end-to-end-workflow.md",
     "templates/spec.md",
     "templates/rfc.md",
     "templates/adr.md",
@@ -27,6 +29,13 @@ REQUIRED_FILES = (
     "templates/tasks.md",
     "templates/verification-report.md",
     "templates/handoff.md",
+    ".github/ISSUE_TEMPLATE/config.yml",
+    ".github/ISSUE_TEMPLATE/skill-feedback.yml",
+    ".github/ISSUE_TEMPLATE/evaluation-case.yml",
+    ".github/PULL_REQUEST_TEMPLATE.md",
+    ".github/DISCUSSION_TEMPLATE/ideas.yml",
+    "assets/social-preview.svg",
+    "assets/social-preview.png",
 )
 FRONTMATTER_PATTERN = re.compile(r"\A---\n(?P<body>.*?)\n---\n", re.DOTALL)
 LINK_PATTERN = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
@@ -55,6 +64,38 @@ def parse_frontmatter(path: Path) -> dict[str, str]:
 
 def markdown_files() -> list[Path]:
     return sorted(ROOT.rglob("*.md"))
+
+
+def text_files() -> list[Path]:
+    extensions = {".json", ".md", ".svg", ".yaml", ".yml"}
+    return sorted(
+        path
+        for path in ROOT.rglob("*")
+        if path.is_file()
+        and ".git" not in path.parts
+        and path.suffix.lower() in extensions
+    )
+
+
+def validate_social_preview(path: Path) -> list[str]:
+    if not path.exists():
+        return []
+
+    errors: list[str] = []
+    data = path.read_bytes()
+    if len(data) > 1_000_000:
+        errors.append("assets/social-preview.png: must stay below 1 MB")
+    if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n":
+        errors.append("assets/social-preview.png: invalid PNG header")
+        return errors
+
+    width, height = struct.unpack(">II", data[16:24])
+    if (width, height) != (1280, 640):
+        errors.append(
+            "assets/social-preview.png: expected 1280x640, "
+            f"found {width}x{height}"
+        )
+    return errors
 
 
 def validate_links(path: Path) -> list[str]:
@@ -119,7 +160,7 @@ def main() -> int:
         except (json.JSONDecodeError, AttributeError) as exc:
             errors.append(f"evals/cases.json: {exc}")
 
-    for path in markdown_files():
+    for path in text_files():
         text = path.read_text(encoding="utf-8")
         relative = path.relative_to(ROOT)
         if PLACEHOLDER_PATTERN.search(text):
@@ -127,7 +168,10 @@ def main() -> int:
         for pattern in SECRET_PATTERNS:
             if pattern.search(text):
                 errors.append(f"{relative}: possible secret pattern")
-        errors.extend(validate_links(path))
+        if path.suffix.lower() == ".md":
+            errors.extend(validate_links(path))
+
+    errors.extend(validate_social_preview(ROOT / "assets" / "social-preview.png"))
 
     if errors:
         print("Validation failed:")

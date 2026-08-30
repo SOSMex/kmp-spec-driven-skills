@@ -35,6 +35,17 @@
       ]
     },
     {
+      "id": "design-platform-api-boundary",
+      "skill": "kmp-spec-driven-design",
+      "prompt": "A shared presentation flow needs lifecycle observation on Android and iOS, while its timeout and retry policy are deterministic.",
+      "expected_invariants": [
+        "keeps deterministic timeout and retry policy in the broadest valid shared source set",
+        "keeps lifecycle integrations behind thin platform boundaries",
+        "discovers the repository source-set graph instead of inventing an intermediate source set",
+        "defines platform runtime evidence for lifecycle behavior"
+      ]
+    },
+    {
       "id": "verify-shared-tests-only",
       "skill": "kmp-proof-of-parity",
       "prompt": "The JVM-hosted shared tests pass and Android and iOS compile. No runtime flow was exercised.",
@@ -65,6 +76,17 @@
         "does not report released",
         "records build identity and dated submission evidence",
         "treats iOS status independently"
+      ]
+    },
+    {
+      "id": "verify-two-processes-not-physical",
+      "skill": "kmp-proof-of-parity",
+      "prompt": "A synchronized KMP flow passed automated tests and ran in two emulator processes on one workstation. The acceptance plan requires a physical Android-iPhone test.",
+      "expected_invariants": [
+        "records the automated and emulator evidence that was actually observed",
+        "does not report physically-tested",
+        "keeps the physical Android-iPhone gate open",
+        "names the required device topology in the residual gate"
       ]
     }
   ]
