@@ -1,0 +1,36 @@
+name: Evaluation case
+description: Propose a realistic scenario and observable invariants for one of the skills.
+title: "[Evaluation]: "
+labels:
+  - evaluation
+body:
+  - type: dropdown
+    id: skill
+    attributes:
+      label: Skill
+      options:
+        - kmp-spec-driven-design
+        - kmp-proof-of-parity
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Scenario prompt
+      description: Keep it vendor-neutral and independent from private projects.
+    validations:
+      required: true
+  - type: textarea
+    id: invariants
+    attributes:
+      label: Expected observable invariants
+      description: List decisions, boundaries, or evidence claims that a strong response must preserve.
+    validations:
+      required: true
+  - type: textarea
+    id: failure
+    attributes:
+      label: Failure mode prevented
+      description: Explain why this case improves a real KMP workflow.
+    validations:
+      required: true

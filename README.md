@@ -1,6 +1,20 @@
 # KMP Spec-Driven Skills
 
-Reusable agent skills for designing and verifying Kotlin Multiplatform work with explicit requirements, architecture boundaries, decision records, and evidence.
+**Design before code. Prove before claims.**
+
+[![Latest release](https://img.shields.io/github/v/release/SOSMex/kmp-spec-driven-skills?display_name=tag&sort=semver)](https://github.com/SOSMex/kmp-spec-driven-skills/releases/latest)
+[![Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-2563eb.svg)](LICENSE)
+[![Agent skills](https://img.shields.io/badge/agent%20skills-2-7c3aed.svg)](#included-skills)
+
+Two portable agent skills for taking Kotlin Multiplatform work from an accepted outcome to an implementation-ready design, then verifying the strongest cross-platform evidence that actually exists.
+
+```bash
+npx skills add SOSMex/kmp-spec-driven-skills \
+  --skill kmp-spec-driven-design \
+  --skill kmp-proof-of-parity
+```
+
+The skills are designed for Codex, Claude Code, and other agents that support the portable `SKILL.md` format. They do not require a specific KMP architecture, Gradle task name, backend, or UI framework.
 
 ## Why this exists
 
@@ -26,6 +40,8 @@ We want humans and coding agents to collaborate on KMP features without losing t
 2. **Boundaries:** shared rules, contracts, data access, presentation, and platform integrations stay in the right place.
 3. **Truthful evidence:** readiness claims match what was actually compiled, tested, observed, submitted, or released on every relevant target.
 
+## Included skills
+
 This repository provides two complementary skills:
 
 - [`kmp-spec-driven-design`](skills/kmp-spec-driven-design/SKILL.md) turns an accepted problem into an implementation-ready KMP design, including risk classification, module ownership, contracts, degraded states, RFC/ADR decisions, and a verification plan.
@@ -50,7 +66,45 @@ flowchart LR
 
 The skills do not replace product judgment, code review, or physical-device validation. They make those gates explicit and reproducible.
 
-## Quick start
+## What makes this useful
+
+Most agent workflows optimize for generating code. This repository focuses on the decisions before implementation and the evidence after it:
+
+- discover the target repository before prescribing modules or commands;
+- keep feature specs, risky proposals, accepted decisions, tasks, and evidence distinct;
+- put deterministic behavior in the broadest valid shared source set;
+- make offline, stale, duplicate, incompatible, and partial states explicit;
+- report Android, iOS, shared, backend, and multi-device evidence independently;
+- prevent `Compiled`, `Automated-tested`, `Emulator-tested`, `Physically-tested`, `Store-submitted`, and `Released` from collapsing into one vague claim.
+
+## Install
+
+Preview the available skills:
+
+```bash
+npx skills add SOSMex/kmp-spec-driven-skills --list
+```
+
+Install both into the current project:
+
+```bash
+npx skills add SOSMex/kmp-spec-driven-skills \
+  --skill kmp-spec-driven-design \
+  --skill kmp-proof-of-parity
+```
+
+Install one skill globally for Codex:
+
+```bash
+npx skills add SOSMex/kmp-spec-driven-skills \
+  --skill kmp-proof-of-parity \
+  --agent codex \
+  --global
+```
+
+The open-source [`skills` CLI](https://github.com/vercel-labs/skills) supports GitHub repositories and multiple coding agents. You can also copy or link a skill directory manually.
+
+## Try the workflow
 
 Each directory under `skills/` is self-contained. Copy or link the desired directory into the skills location supported by your coding agent, or place it in a repository-level skills directory referenced by that project's agent instructions.
 
@@ -79,12 +133,30 @@ level reached for Android, iOS, shared logic, and backend behavior.
 
 The skills use the portable `SKILL.md` format documented by [Claude Agent Skills](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview). Their KMP source-set guidance follows the [official Kotlin Multiplatform project structure](https://kotlinlang.org/docs/multiplatform/multiplatform-discover-project.html).
 
+For a complete example from request classification through a truthful handoff, see [`examples/end-to-end-workflow.md`](examples/end-to-end-workflow.md).
+
 ## Included resources
 
 - `templates/`: lightweight specs, RFCs, ADRs, plans, tasks, verification reports, and handoffs.
 - `examples/`: one routine feature and one higher-risk offline synchronization example.
 - `evals/`: scenario-based expectations used to test behavior instead of exact wording.
 - `scripts/validate.py`: deterministic structural, link, metadata, and secret-pattern checks.
+
+## Five-minute evaluation
+
+Use one of the prompts below in a disposable or existing KMP repository and review the output against the corresponding invariants in [`evals/cases.json`](evals/cases.json).
+
+```text
+Use kmp-spec-driven-design. Two devices can edit shared state offline and
+reconcile later. Duplicate and reordered delivery are possible. Design the
+smallest coherent slice, but do not implement it.
+```
+
+```text
+Use kmp-proof-of-parity. Shared JVM tests pass and Android and iOS compile,
+but only the Android flow was observed on an emulator. State exactly what is
+proven and what remains open.
+```
 
 ## Evidence vocabulary
 
@@ -112,4 +184,3 @@ The validator uses only the Python standard library.
 ## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md). Improvements should be grounded in a reproducible KMP workflow, a concrete failure mode, or an evaluation case. The repository is licensed under Apache License 2.0.
-Reusable agent skills for spec-driven Kotlin Multiplatform delivery and parity verification

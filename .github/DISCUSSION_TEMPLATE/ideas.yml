@@ -1,0 +1,34 @@
+title: "[Idea] "
+labels:
+  - idea
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping make spec-driven KMP delivery more useful. Start with the workflow problem, not a predetermined framework or tool.
+  - type: textarea
+    id: problem
+    attributes:
+      label: KMP workflow problem
+      description: What recurring design, implementation, or verification failure are you trying to prevent?
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Reproducible example
+      description: Provide a small public or anonymized scenario that demonstrates the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired agent behavior
+      description: Which observable decision, boundary, or evidence claim should improve?
+    validations:
+      required: true
+  - type: textarea
+    id: tradeoffs
+    attributes:
+      label: Tradeoffs or alternatives
+      description: Note any cases where the proposed guidance should not apply.
