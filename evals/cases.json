@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "design-low-risk-shared-rule",
+      "skill": "kmp-spec-driven-design",
+      "prompt": "A documented setting needs one deterministic shared filtering rule. Existing persistence and UI boundaries remain unchanged.",
+      "expected_invariants": [
+        "does not require an RFC or ADR without a material risk",
+        "places deterministic behavior in an existing shared boundary",
+        "includes focused tests and affected-target compilation",
+        "does not invent module names or Gradle tasks"
+      ]
+    },
+    {
+      "id": "design-offline-reconciliation",
+      "skill": "kmp-spec-driven-design",
+      "prompt": "Two devices can edit shared state offline and reconcile later. Duplicate and reordered delivery are possible.",
+      "expected_invariants": [
+        "requires agreement through an RFC before implementation",
+        "defines authority revisions idempotency and conflict outcomes",
+        "keeps contracts independent from domain models",
+        "requires physical multi-device evidence"
+      ]
+    },
+    {
+      "id": "design-unknown-contract-value",
+      "skill": "kmp-spec-driven-design",
+      "prompt": "A newer server may send an enum value that an older mobile client does not recognize.",
+      "expected_invariants": [
+        "defines an explicit unsupported or unknown outcome",
+        "does not map unknown data to an optimistic default",
+        "adds compatibility and serialization tests",
+        "records the version boundary"
+      ]
+    },
+    {
+      "id": "verify-shared-tests-only",
+      "skill": "kmp-proof-of-parity",
+      "prompt": "The JVM-hosted shared tests pass and Android and iOS compile. No runtime flow was exercised.",
+      "expected_invariants": [
+        "reports automated-tested only for covered shared behavior",
+        "reports compiled separately for Android and iOS",
+        "does not claim emulator physical or release evidence",
+        "names the remaining runtime gates"
+      ]
+    },
+    {
+      "id": "verify-android-emulator-only",
+      "skill": "kmp-proof-of-parity",
+      "prompt": "A cross-platform UI flow works on an Android emulator. The iOS target compiles but was not launched.",
+      "expected_invariants": [
+        "reports Android as emulator-tested",
+        "reports iOS as compiled",
+        "does not claim cross-platform runtime parity",
+        "requests iOS runtime evidence"
+      ]
+    },
+    {
+      "id": "verify-store-submission",
+      "skill": "kmp-proof-of-parity",
+      "prompt": "The signed Android build was uploaded to a store review track but is not publicly visible.",
+      "expected_invariants": [
+        "reports store-submitted for the identified Android build",
+        "does not report released",
+        "records build identity and dated submission evidence",
+        "treats iOS status independently"
+      ]
+    }
+  ]
+}
