@@ -46,6 +46,16 @@
       ]
     },
     {
+      "id": "design-bundled-template-fallback",
+      "skill": "kmp-spec-driven-design",
+      "prompt": "The target repository has no artifact format. Produce the implementation-ready design using the skill's fallback resources.",
+      "expected_invariants": [
+        "uses the templates bundled inside the installed skill",
+        "does not require repository-level skill resources",
+        "keeps specs plans tasks RFCs ADRs and verification evidence distinct"
+      ]
+    },
+    {
       "id": "verify-shared-tests-only",
       "skill": "kmp-proof-of-parity",
       "prompt": "The JVM-hosted shared tests pass and Android and iOS compile. No runtime flow was exercised.",
@@ -87,6 +97,16 @@
         "does not report physically-tested",
         "keeps the physical Android-iPhone gate open",
         "names the required device topology in the residual gate"
+      ]
+    },
+    {
+      "id": "verify-bundled-template-fallback",
+      "skill": "kmp-proof-of-parity",
+      "prompt": "The target repository has no verification-report format. Produce the handoff using the skill's fallback resources.",
+      "expected_invariants": [
+        "uses the verification report bundled inside the installed skill",
+        "does not require repository-level skill resources",
+        "reports evidence results residual gates and owners"
       ]
     }
   ]

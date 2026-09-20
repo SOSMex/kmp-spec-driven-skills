@@ -22,13 +22,13 @@ REQUIRED_FILES = (
     "LICENSE",
     "evals/cases.json",
     "examples/end-to-end-workflow.md",
-    "templates/spec.md",
-    "templates/rfc.md",
-    "templates/adr.md",
-    "templates/plan.md",
-    "templates/tasks.md",
-    "templates/verification-report.md",
-    "templates/handoff.md",
+    "skills/kmp-spec-driven-design/templates/spec.md",
+    "skills/kmp-spec-driven-design/templates/rfc.md",
+    "skills/kmp-spec-driven-design/templates/adr.md",
+    "skills/kmp-spec-driven-design/templates/plan.md",
+    "skills/kmp-spec-driven-design/templates/tasks.md",
+    "skills/kmp-proof-of-parity/templates/verification-report.md",
+    "skills/kmp-proof-of-parity/templates/handoff.md",
     ".github/ISSUE_TEMPLATE/config.yml",
     ".github/ISSUE_TEMPLATE/skill-feedback.yml",
     ".github/ISSUE_TEMPLATE/evaluation-case.yml",
@@ -113,6 +113,28 @@ def validate_links(path: Path) -> list[str]:
     return errors
 
 
+def validate_self_contained_skill(skill_root: Path) -> list[str]:
+    errors: list[str] = []
+    resolved_root = skill_root.resolve()
+    for path in sorted(skill_root.rglob("*.md")):
+        for raw_target in LINK_PATTERN.findall(path.read_text(encoding="utf-8")):
+            target = raw_target.strip().split()[0].strip("<>")
+            if target.startswith(("http://", "https://", "mailto:", "#")):
+                continue
+            local_part = target.split("#", 1)[0]
+            if not local_part:
+                continue
+            resolved = (path.parent / local_part).resolve()
+            try:
+                resolved.relative_to(resolved_root)
+            except ValueError:
+                errors.append(
+                    f"{path.relative_to(ROOT)}: link escapes skill directory "
+                    f"{raw_target}"
+                )
+    return errors
+
+
 def main() -> int:
     errors: list[str] = []
 
@@ -121,7 +143,8 @@ def main() -> int:
             errors.append(f"missing required file: {relative}")
 
     for skill in SKILLS:
-        path = ROOT / "skills" / skill / "SKILL.md"
+        skill_root = ROOT / "skills" / skill
+        path = skill_root / "SKILL.md"
         if not path.exists():
             errors.append(f"missing skill: {path.relative_to(ROOT)}")
             continue
@@ -139,6 +162,7 @@ def main() -> int:
             errors.append(f"{path.relative_to(ROOT)}: invalid description length")
         if len(path.read_text(encoding="utf-8").splitlines()) > 500:
             errors.append(f"{path.relative_to(ROOT)}: SKILL.md exceeds 500 lines")
+        errors.extend(validate_self_contained_skill(skill_root))
 
     eval_path = ROOT / "evals" / "cases.json"
     if eval_path.exists():
