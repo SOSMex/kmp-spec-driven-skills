@@ -137,7 +137,7 @@ For a complete example from request classification through a truthful handoff, s
 
 ## Included resources
 
-- `templates/`: lightweight specs, RFCs, ADRs, plans, tasks, verification reports, and handoffs.
+- `skills/*/templates/`: lightweight, self-contained specs, RFCs, ADRs, plans, tasks, verification reports, and handoffs.
 - `examples/`: one routine feature and one higher-risk offline synchronization example.
 - `evals/`: scenario-based expectations used to test behavior instead of exact wording.
 - `scripts/validate.py`: deterministic structural, link, metadata, and secret-pattern checks.

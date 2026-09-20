@@ -40,7 +40,7 @@ Report:
 - verification matrix by target;
 - open decisions and named owner approvals.
 
-Use the repository's own artifact format when it exists. Otherwise adapt the templates in [`../../templates/`](../../templates/).
+Use the repository's own artifact format when it exists. Otherwise adapt the templates in [`templates/`](templates/).
 
 ## Stop conditions
 

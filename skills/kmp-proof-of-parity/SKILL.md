@@ -36,7 +36,7 @@ Use a matrix with:
 - result;
 - residual gate and owner.
 
-Also report changed scope, regressions checked, unavailable evidence, and whether the pull request is reviewable. Use [`../../templates/verification-report.md`](../../templates/verification-report.md) when the repository has no format.
+Also report changed scope, regressions checked, unavailable evidence, and whether the pull request is reviewable. Use [`templates/verification-report.md`](templates/verification-report.md) when the repository has no format.
 
 ## Claim rules
 
